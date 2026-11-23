@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2c3e50">
+    <title>Profile Settings</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.profile-page { min-height: 100vh; font-family: Arial, sans-serif; }
+        .profile-page .header { z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; }
+        .profile-page .header > h2 { width: auto; padding: 0; font-size: 20px; }
+        .account-header { display: flex; align-items: center; gap: 10px; color: white; }
+        .account-header img, .account-header .avatar-fallback { width: 40px; height: 40px; padding: 0; border-radius: 50%; object-fit: cover; }
+        .avatar-fallback { display: grid; place-items: center; background: #dbe5ef; color: #2c3e50; font-weight: 700; }
+        .profile-page .sidebar { z-index: 1; }
+        .profile-page .sidebar a { border: 0; border-radius: 6px; font-family: Arial, sans-serif; font-size: 16px; }
+        .profile-page .sidebar a:last-child { position: static; width: auto; left: auto; bottom: auto; margin-top: 18px; background: transparent; }
+        .profile-page .sidebar a.active, .profile-page .sidebar a:hover { background: #2c3e50; }
+        .logout-button { display: block; width: calc(100% - 20px); margin: 18px 10px; padding: 13px 20px; border: 0; border-radius: 6px; background: #682727; color: white; text-align: left; font: inherit; font-size: 16px; cursor: pointer; }
+        .logout-button:hover { background: #8e2929; }
+        .profile-page .main-content { min-height: 100vh; padding-top: 96px; }
+        .profile-page .main-content h1 { margin: 0 0 8px; color: #26384a; font-family: Arial, sans-serif; font-size: 28px; }
+        .page-intro { margin-bottom: 22px; color: #667085; }
+        .settings-card { max-width: 680px; padding: 26px; border-radius: 12px; background: white; box-shadow: 0 2px 12px rgba(0,0,0,.1); }
+        .settings-card h2 { margin: 0 0 6px; color: #26384a; font-family: Arial, sans-serif; font-size: 20px; }
+        .readonly-email { margin: 0 0 20px; color: #667085; font-size: 14px; overflow-wrap: anywhere; }
+        .settings-form { display: grid; gap: 17px; }
+        .settings-form label { display: grid; gap: 7px; color: #344054; font-size: 14px; font-weight: 600; }
+        .settings-form input { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #d0d5dd; border-radius: 7px; color: #26384a; font: inherit; }
+        .settings-form input[type="file"] { padding: 8px; }
+        .settings-form input:focus { outline: 2px solid #9bb4cf; border-color: #2c3e50; }
+        .settings-picture-row { display: flex; align-items: center; gap: 16px; }
+        .settings-picture-row img, .settings-picture-row .profile-fallback { width: 76px; height: 76px; flex: 0 0 76px; border-radius: 50%; object-fit: cover; }
+        .profile-fallback { display: grid; place-items: center; background: #e8eef4; color: #2c3e50; font-size: 28px; font-weight: 700; }
+        .save-button { min-height: 44px; padding: 11px 16px; border: 0; border-radius: 7px; background: #2c3e50; color: white; font: inherit; font-weight: 700; cursor: pointer; }
+        .save-button:hover { background: #223246; }
+        .save-button:disabled { opacity: .65; cursor: wait; }
+        .profile-message { min-height: 20px; margin: 0; color: #b42318; font-size: 14px; line-height: 1.45; }
+        .profile-message.success { color: #027a48; }
+        @media (max-width: 700px) {
+            .profile-page .header { padding: 0 14px; }
+            .profile-page .header > h2 { font-size: 17px; }
+            .account-header > span:first-child { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+            .profile-page .sidebar { width: 100%; height: auto; position: fixed; top: 60px; display: flex; align-items: center; overflow-x: auto; padding: 4px; }
+            .profile-page .sidebar a { flex: 0 0 auto; margin: 2px; padding: 11px 12px; font-size: 14px; white-space: nowrap; }
+            .logout-button { flex: 0 0 auto; width: auto; margin: 2px; padding: 11px 12px; font-size: 14px; white-space: nowrap; }
+            .profile-page .main-content { margin-left: 0; padding: 130px 18px 28px; }
+        }
+        @media (max-width: 480px) { .settings-card { padding: 20px; } .settings-picture-row { align-items: flex-start; flex-direction: column; } }
+    </style>
+</head>
+<body class="profile-page">
+    <header class="header">
+        <h2>My Account</h2>
+        <div class="account-header">
+            <span id="headerName">My profile</span>
+            <img id="headerAvatar" alt="Profile picture" hidden>
+            <span class="avatar-fallback" id="headerFallback" aria-hidden="true">U</span>
+        </div>
+    </header>
+    <nav class="sidebar" aria-label="Account navigation">
+        <a href="./admin.html">👤 My profile</a>
+        <a class="active" href="./setting.html">⚙ Settings</a>
+        <button class="logout-button" id="logoutButton" type="button">🚪 Log out</button>
+    </nav>
+    <main class="main-content">
+        <h1>Profile Settings</h1>
+        <p class="page-intro">Change only your name, number, and profile picture.</p>
+        <section class="settings-card">
+            <h2>Your details</h2>
+            <p class="readonly-email" id="settingsEmail">Loading your account…</p>
+            <form class="settings-form" id="profileForm">
+                <div class="settings-picture-row">
+                    <img id="profileImage" alt="Profile picture preview" hidden>
+                    <div class="profile-fallback" id="profileFallback" aria-hidden="true">U</div>
+                    <label for="pictureInput">Profile picture
+                        <input id="pictureInput" name="picture" type="file" accept="image/*">
+                    </label>
+                </div>
+                <label for="nameInput">Name
+                    <input id="nameInput" name="name" type="text" autocomplete="name" required>
+                </label>
+                <label for="numberInput">Number
+                    <input id="numberInput" name="number" type="tel" autocomplete="tel" required>
+                </label>
+                <p class="profile-message" id="pageMessage" role="status" aria-live="polite"></p>
+                <button class="save-button" id="saveProfileButton" type="submit">Save changes</button>
+            </form>
+        </section>
+    </main>
+    <script type="module" src="admin.js"></script>
+</body>
+</html>

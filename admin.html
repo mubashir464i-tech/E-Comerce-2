@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2c3e50">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.profile-page { min-height: 100vh; font-family: Arial, sans-serif; }
+        .profile-page .header { z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; }
+        .profile-page .header > h2 { width: auto; padding: 0; font-size: 20px; }
+        .account-header { display: flex; align-items: center; gap: 10px; color: white; }
+        .account-header img, .account-header .avatar-fallback { width: 40px; height: 40px; padding: 0; border-radius: 50%; object-fit: cover; }
+        .avatar-fallback { display: grid; place-items: center; background: #dbe5ef; color: #2c3e50; font-weight: 700; }
+        .profile-page .sidebar { z-index: 1; }
+        .profile-page .sidebar a { border: 0; border-radius: 6px; font-family: Arial, sans-serif; font-size: 16px; }
+        .profile-page .sidebar a:last-child { position: static; width: auto; left: auto; bottom: auto; margin-top: 18px; background: transparent; }
+        .profile-page .sidebar a.active, .profile-page .sidebar a:hover { background: #2c3e50; }
+        .logout-button { display: block; width: calc(100% - 20px); margin: 18px 10px; padding: 13px 20px; border: 0; border-radius: 6px; background: #682727; color: white; text-align: left; font: inherit; font-size: 16px; cursor: pointer; }
+        .logout-button:hover { background: #8e2929; }
+        .profile-page .main-content { min-height: 100vh; padding-top: 96px; }
+        .profile-page .main-content h1 { margin: 0 0 8px; color: #26384a; font-family: Arial, sans-serif; font-size: 28px; }
+        .page-intro { margin-bottom: 22px; color: #667085; }
+        .profile-card { max-width: 760px; padding: 28px; border-radius: 12px; background: white; box-shadow: 0 2px 12px rgba(0,0,0,.1); }
+        .profile-identity { display: flex; align-items: center; gap: 20px; padding-bottom: 22px; border-bottom: 1px solid #eaecf0; }
+        .profile-picture, .profile-fallback { width: 104px; height: 104px; flex: 0 0 104px; border-radius: 50%; object-fit: cover; }
+        .profile-fallback { display: grid; place-items: center; background: #e8eef4; color: #2c3e50; font-size: 36px; font-weight: 700; }
+        .profile-identity h2 { margin-bottom: 7px; color: #26384a; font-family: Arial, sans-serif; }
+        .profile-identity p { color: #667085; overflow-wrap: anywhere; }
+        .profile-details { display: grid; grid-template-columns: 140px 1fr; gap: 14px 16px; padding: 22px 0; }
+        .profile-details dt { color: #667085; }
+        .profile-details dd { color: #26384a; font-weight: 600; overflow-wrap: anywhere; }
+        .profile-card > .profile-action { position: static; display: inline-block; width: auto; left: auto; bottom: auto; padding: 11px 16px; border-radius: 7px; background: #2c3e50; color: white; text-decoration: none; font-weight: 700; }
+        .profile-action:hover { background: #223246; }
+        .profile-message { min-height: 20px; margin: 0 0 14px; color: #b42318; font-size: 14px; }
+        .profile-message.success { color: #027a48; }
+        @media (max-width: 700px) {
+            .profile-page .header { padding: 0 14px; }
+            .profile-page .header > h2 { font-size: 17px; }
+            .account-header > span:first-child { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+            .profile-page .sidebar { width: 100%; height: auto; position: fixed; top: 60px; display: flex; align-items: center; overflow-x: auto; padding: 4px; }
+            .profile-page .sidebar a { flex: 0 0 auto; margin: 2px; padding: 11px 12px; font-size: 14px; white-space: nowrap; }
+            .logout-button { flex: 0 0 auto; width: auto; margin: 2px; padding: 11px 12px; font-size: 14px; white-space: nowrap; }
+            .profile-page .main-content { margin-left: 0; padding: 130px 18px 28px; }
+        }
+        @media (max-width: 480px) {
+            .profile-card { padding: 20px; }
+            .profile-identity { align-items: flex-start; gap: 14px; }
+            .profile-picture, .profile-fallback { width: 76px; height: 76px; flex-basis: 76px; }
+            .profile-fallback { font-size: 28px; }
+            .profile-details { grid-template-columns: 1fr; gap: 6px; }
+            .profile-details dd { margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body class="profile-page">
+    <header class="header">
+        <h2>My Account</h2>
+        <div class="account-header">
+            <span id="headerName">My profile</span>
+            <img id="headerAvatar" alt="Profile picture" hidden>
+            <span class="avatar-fallback" id="headerFallback" aria-hidden="true">U</span>
+        </div>
+    </header>
+    <nav class="sidebar" aria-label="Account navigation">
+        <a class="active" href="./admin.html">👤 My profile</a>
+        <a href="./setting.html">⚙ Settings</a>
+        <button class="logout-button" id="logoutButton" type="button">🚪 Log out</button>
+    </nav>
+    <main class="main-content">
+        <h1>My Profile</h1>
+        <p class="page-intro">Your account details and profile picture.</p>
+        <p class="profile-message" id="pageMessage" role="status" aria-live="polite"></p>
+        <section class="profile-card" aria-label="Your profile">
+            <div class="profile-identity">
+                <img class="profile-picture" id="profileImage" alt="Your profile picture" hidden>
+                <div class="profile-fallback" id="profileFallback" aria-hidden="true">U</div>
+                <div>
+                    <h2 id="profileName">Loading profile…</h2>
+                    <p id="profileEmail"></p>
+                </div>
+            </div>
+            <dl class="profile-details">
+                <dt>Name</dt><dd id="profileNameDetail">—</dd>
+                <dt>Email</dt><dd id="profileEmailDetail">—</dd>
+                <dt>Number</dt><dd id="profileNumber">—</dd>
+            </dl>
+            <a class="profile-action" href="./setting.html">Edit my profile</a>
+        </section>
+    </main>
+    <script type="module" src="admin.js"></script>
+</body>
+</html>

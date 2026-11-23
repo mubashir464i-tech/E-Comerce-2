@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2c3e50">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.auth-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; font-family: Arial, sans-serif; background: #f4f6f9; }
+        .auth-card { width: min(100%, 480px); padding: 30px 32px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgba(28, 45, 64, .12); }
+        .auth-card h1 { margin: 0 0 8px; color: #2c3e50; font-size: 26px; }
+        .auth-intro { margin: 0 0 22px; color: #667085; line-height: 1.5; }
+        .auth-form { display: grid; gap: 13px; }
+        .auth-form label { display: grid; gap: 7px; color: #344054; font-size: 14px; font-weight: 600; }
+        .auth-form input { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid #d0d5dd; border-radius: 7px; font: inherit; }
+        .auth-form input[type="file"] { padding: 8px; }
+        .auth-form input:focus { outline: 2px solid #9bb4cf; border-color: #2c3e50; }
+        .auth-button { min-height: 45px; margin-top: 4px; padding: 11px 14px; border: 0; border-radius: 7px; background: #2c3e50; color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+        .auth-button:hover { background: #223246; }
+        .auth-button:disabled { opacity: .65; cursor: wait; }
+        .auth-message { min-height: 20px; margin: 12px 0 0; color: #b42318; font-size: 14px; line-height: 1.4; }
+        .auth-footer { margin: 16px 0 0; color: #667085; text-align: center; font-size: 14px; }
+        .auth-footer a { position: static; display: inline-block; width: auto; left: auto; bottom: auto; padding: 8px 14px; border: 1px solid #2c3e50; border-radius: 7px; background: #fff; color: #2c3e50; font-weight: 700; text-decoration: none; }
+        .auth-footer a:hover { background: #eef2f6; }
+        @media (max-width: 480px) { .auth-card { padding: 24px 19px; } }
+    </style>
+</head>
+<body class="auth-page">
+    <main class="auth-card">
+        <h1>Create Account</h1>
+        <p class="auth-intro">Enter your details to create an account.</p>
+        <form class="auth-form" id="signupForm">
+            <label for="name">Name
+                <input id="name" name="name" type="text" autocomplete="name" required>
+            </label>
+            <label for="confirmName">Confirm name
+                <input id="confirmName" name="confirmName" type="text" autocomplete="off" required>
+            </label>
+            <label for="email">Email
+                <input id="email" name="email" type="email" autocomplete="email" required>
+            </label>
+            <label for="password">Password
+                <input id="password" name="password" type="password" autocomplete="new-password" minlength="6" required>
+            </label>
+            <label for="number">Number
+                <input id="number" name="number" type="tel" autocomplete="tel" required>
+            </label>
+            <label for="picture">Picture
+                <input id="picture" name="picture" type="file" accept="image/*" required>
+            </label>
+            <button class="auth-button" id="signupButton" type="submit">Create Account</button>
+        </form>
+        <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
+        <p class="auth-footer">Already have an account? <a href="login.html">Log in</a></p>
+    </main>
+    <script type="module" src="signup.js"></script>
+</body>
+</html>
